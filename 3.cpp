@@ -1,62 +1,87 @@
 #include <iostream>
 #include <fstream>
-#include <locale.h>
-#include <cmath>
+#include <string>
+
 using namespace std;
 
-int all(int n1,int n2,int n3){
-    if(n1+n2<n3 or n1+n3<n2 or n2+n3<n1){
-        printf("Треугольника со сторонами (%d,%d,%d) не существует",n1,n2,n3);
-        return 0;
-    }
-    if(n1==n2 and n2==n3 and n1==n3){
-        printf("Треугольник со сторонами (%d,%d,%d) является равносторонним",n1,n2,n3);
-        return 0;
-    }
-    if(n1==n2 or n2==n3 or n1 == n3){
-        printf("Треугольник со сторонами (%d,%d,%d) является равнобедренным",n1,n2,n3);
-        return 0;
-    }
-    if(n1!=n2 and n2!=n3 and n1!=n3){
-        int max = n1,x1 = n2,x2 = n3; 
-        
-        if(n1<n2){
-            max = n2;
-            x1 = n1;
-            
-            if(n2<n3){
-                max = n3;
-                x2 = n2;
-            }
-        }
-        if(n2<n3){
-            max = n3;
-            x2 = n2;
-            }
-        
-        if(pow(max,2) == pow(x1,2)+pow(x2,2)){
-            printf("Треугольник со сторонами (%d,%d,%d) является прямоугольным",n1,n2,n3);
-            return 0;
-        }
-        else{
-            printf("Треугольник со сторонами (%d,%d,%d) является разносторонним",n1,n2,n3);
-            return 0;
-        }
-    }
+bool file_Output(int b, int c)
+{
+	ofstream fout;
+
+
+	fout.open("number.txt", std::ofstream::app);
+
+	if (!fout.is_open())
+	{
+		return false;
+	}
+	else
+	{
+		fout << b << '\n' << c << '\n';
+		fout.close();
+		return true;
+	}
 
 }
+bool file_Input(int a)
+{
+	ofstream result("result.txt", std::ofstream::app);
+	ifstream fin;
 
-int main(){
-    setlocale(LC_ALL,"Russian");
-    int n1,n2,n3,sum = 0;
-    ifstream f1;
-    f1.open("numbers.txt");
-    
-    while(!f1.eof()){
-        f1>>n1;
-        f1>>n2;
-        f1>>n3;
-        all(n1,n2,n3);
-   }
-    f1.close();
+	fin.open("number.txt", std::ios_base::in);
+
+	if (!fin.is_open())
+	{
+		return false;
+	}
+	else
+	{
+
+		result << "Наибольший общий делитель равен: " << a << '\n';
+		return true;
+
+	}
+}
+void NOD(int firstNumber, int secondNumber)
+{
+	while (true)
+	{
+		if (firstNumber == secondNumber)
+		{
+			file_Input(firstNumber);
+			return;
+		}
+		else if (firstNumber > secondNumber)
+		{
+			firstNumber -= secondNumber;
+		}
+		else
+		{
+			secondNumber -= firstNumber;
+		}
+	}
+}
+
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	int num1;
+	int num2;
+	int count = 0;
+
+	cout << "Введите 2 положительных числа: ";
+	cin >> num1;
+	cin >> num2;
+	if (num1 > 0 && num2 > 0)
+	{
+		file_Output(num1, num2);
+		NOD(num1, num2);
+	}
+	else
+	{
+		cout << "нельзя";
+	}
+	return 0;
 }
