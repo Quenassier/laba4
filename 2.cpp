@@ -1,48 +1,108 @@
 #include <iostream>
 #include <fstream>
-#include <locale.h>
-#include <vector>
-#include <cmath>
+
 using namespace std;
 
-double get_S(double n1, double n2, double n3) {
-    double P, S;
-    P = (n1 + n2 + n3) / 2;
-    S = pow((P * (P - n1) * (P - n2) * (P - n3)), 0.5);
-    cout << S << "\n";
-    return S;
+int num(int b)
+{
+	if (b < 10 , b >= 0)
+	{
+		return 1;
+	}
+	else if (b > 9 , b <= 99)
+	{
+		return 2;
+	}
+	else if (b > 99 , b <= 999)
+	{
+		return 3;
+	}
+	else
+		return 0;
 }
 
-std::vector<double> get_v() {
-    int number;
-    vector<double> all;
-    ifstream f1;
-    f1.open("number.txt");
+int main()
+{
+	setlocale(LC_ALL, "ru");
 
-    while (!f1.eof()) {
-        f1 >> number;
-        all.push_back(number);
-    }
-    f1.close();
+	ifstream f_input;
+	ofstream f_output;
+	ofstream result("result.txt");
 
-    f1.open("number.txt");
-    f1 >> number;
-    all.push_back(number);
+	int number;
+	int numberInTheFile;
+	int counter = 0;
+	int counter1 = 0;
+	int counter2 = 0;
 
-    f1.close();
-    return all;
+	do
+	{
+		cout << "Введите положительное число:";
+		cin >> number;
 
-}
+		if (number != 0)
+		{
+			f_output.open("number.txt", std::ofstream::app);
 
-int main() {
-    setlocale(LC_ALL, "Russian");
-    vector<double> all_n;
-    all_n = get_v();
-    double S = 0;
-    
-    for(int i = 0; i < all_n.size() - 2 ;i++){
-        S += get_S(all_n[i], all_n[i+1], all_n[i+2]);
-        cout<<endl;
-    }
-    cout<<"S 12-ugolnika - "<<S;
+			if (!f_output.is_open())
+			{
+				cout << "Ошибка открытия файла";
+				return 1;
+			}
+			else
+			{
+				f_output << number << '\n';
+				f_output.close();
+			}
+
+		}
+
+	} while (number != 0);
+
+	f_input.open("number.txt", std::ios_base::in);
+
+	if (!f_input.is_open())
+	{
+		cout << "Ошибка открытия файла";
+		return 1;
+	}
+	else
+	{
+		while (f_input >> numberInTheFile)
+		{
+
+			if (num(numberInTheFile) == 1)
+			{
+				counter++;
+			}
+			else if (num(numberInTheFile) == 2)
+			{
+				counter1++;
+			}
+			else if (num(numberInTheFile) == 3)
+			{
+				counter2++;
+			}
+			else if (numberInTheFile > 999)
+			{
+				cout << "Число " << numberInTheFile << " больше 999" << '\n';
+			}
+			else
+			{
+				cout << "Число " << numberInTheFile << " отрицательное" << '\n';
+			}
+
+
+
+		}
+		f_input.close();
+		if (number == 0)
+		{
+			result << "Количество однозначных чисел: " << counter << '\n' <<
+				"Количество двухзначных чисел: " << counter1 << '\n' <<
+				"Количество трехзначных чисел: " << counter2 << '\n';
+		}
+
+	}
+	return 0;
 }
