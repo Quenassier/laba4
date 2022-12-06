@@ -5,15 +5,15 @@ using namespace std;
 
 int num(int b)
 {
-	if (b < 10 , b >= 0)
+	if (b < 10 && b >= 0)
 	{
 		return 1;
 	}
-	else if (b > 9 , b <= 99)
+	else if (b > 9 && b <= 99)
 	{
 		return 2;
 	}
-	else if (b > 99 , b <= 999)
+	else if (b > 99 && b <= 999)
 	{
 		return 3;
 	}
@@ -44,30 +44,15 @@ int main()
 		{
 			f_output.open("number.txt", std::ofstream::app);
 
-			if (!f_output.is_open())
-			{
-				cout << "Ошибка открытия файла";
-				return 1;
-			}
-			else
-			{
 				f_output << number << '\n';
 				f_output.close();
-			}
 
 		}
 
 	} while (number != 0);
 
-	f_input.open("number.txt", std::ios_base::in);
+	f_input.open("number.txt");
 
-	if (!f_input.is_open())
-	{
-		cout << "Ошибка открытия файла";
-		return 1;
-	}
-	else
-	{
 		while (f_input >> numberInTheFile)
 		{
 
@@ -93,8 +78,8 @@ int main()
 			}
 
 
-
 		}
+
 		f_input.close();
 		if (number == 0)
 		{
@@ -103,6 +88,5 @@ int main()
 				"Количество трехзначных чисел: " << counter2 << '\n';
 		}
 
-	}
 	return 0;
 }
